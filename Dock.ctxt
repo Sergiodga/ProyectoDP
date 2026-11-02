@@ -1,5 +1,5 @@
 #BlueJ class context
-#Tue Oct 27 22:35:44 CET 2026
+#Mon Nov 02 20:25:42 CET 2026
 comment0.target=Dock
 comment0.text=\r\n Model a dock unit within a {@link BikeStation}.\r\n It tracks its charging capabilities, fee, and the electric bikes it has recharged.\r\n @author David J. Barnes and Michael K\u00F6lling\r\n @author DP classes \r\n @version 2026.10.13\r\n
 comment1.params=id speed fee

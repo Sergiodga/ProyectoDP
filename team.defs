@@ -1,4 +1,4 @@
-#Tue Oct 27 22:35:28 CET 2026
+#Mon Nov 02 20:27:15 CET 2026
 bluej.teamsettings.git.branch=
 bluej.teamsettings.git.protocol=https
 bluej.teamsettings.git.repositoryPrefix=/Sergiodga/ProyectoDP.git
@@ -11,6 +11,7 @@ bluej.teamsettings.ignore5=.*\\~
 bluej.teamsettings.ignore6=.*\\\#
 bluej.teamsettings.ignore7=.*\\\#backup
 bluej.teamsettings.ignore8=\\.DS_Store
+bluej.teamsettings.savedpwd=G45c+eME7WqfB0+n3hm6xl6liq47fTldpRlGeeuxE63z7BoHjvjeAOdc3O8cqIR4
 bluej.teamsettings.user=Sergiodga
 bluej.teamsettings.vcs=git
 bluej.teamsettings.yourEmail=sgutierru@alumnos.unex.es
