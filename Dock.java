@@ -12,7 +12,7 @@ public class Dock
     private String idDock;
     private int chargingSpeed;
     private float chargingFee;
-    private ArrayList<ElectricBike> bikesRecharged;
+    private List<ElectricBike> bikesRecharged;
     private float amountCollected;
     private boolean free;
     /**
@@ -25,7 +25,7 @@ public class Dock
         chargingSpeed=speed;
         chargingFee=fee;
         bikesRecharged= new ArrayList<ElectricBike>();
-        amountCollected=0;
+        amountCollected=0.0f;
         free=true;
     }
 
@@ -41,12 +41,20 @@ public class Dock
         return chargingFee;
     }
     
+    public float getAmountCollected(){
+        return amountCollected;
+    }
+    
     public void insertBike(ElectricBike eb){
         bikesRecharged.add(eb);
     }
     
     public void reloadAmountCollected(){
-        // amountCollected;
+        amountCollected=getNumerEVRecharged()*chargingFee;
+    }
+    
+    public boolean getIfFree(){
+        return free;
     }
     
     /**
@@ -55,8 +63,10 @@ public class Dock
      */
     public String toString()
     {
-        //TODO: Complete this code
-        return null;
+        String cad= "(Dock: "+ getIdDock() +
+        ", " + getChargingSpeed() + "wh, " + getChargingFee() + "€, "
+        + getNumerEVRecharged()+ ", " + getAmountCollected()+ ")";
+        return cad;
     }    
 
     
@@ -64,18 +74,18 @@ public class Dock
      * @return The total number of {@link ElectricBike}s that have been recharged by this dock.
      */
     public int getNumerEVRecharged(){
-       //TODO: Complete this code
-        return 0;
+       return bikesRecharged.size();
     }
-    
     
     /**
      * Simulates the charging process for an {@link ElectricBike}.
      * Increases the amount collected and registers the bike as recharged.
      * //TODO complete the JavaDoc comments
      */
-    public float recharge(   ){
-        //TODO: Complete this code
+    public float recharge(ElectricBike EB){
+        EB.recharge();
+        insertBike(EB);
+        reloadAmountCollected();
         return 0;
     }
 
