@@ -22,8 +22,9 @@ public class ElectricBike
     private int batteryLevel;
     private int wsCharged;
     private int chargesCount;
-    private float chargesCost=batteryCapacity-batteryLevel; //* //Tarifa del dock
-    private Dock docks;
+    private float chargesCost; //* //Tarifa del dock
+    private List<Dock> docks;
+    private Location rechargingLocation;
 
     /**
      * Constructor of class ElectricBike.
@@ -36,16 +37,19 @@ public class ElectricBike
      */
     public ElectricBike(EBCompany company, Location location, Location targetLocation, String id, int batteryCapacity)
     {
-           this.company=company;
-           this.location=location;
-           this.targetLocation=targetLocation;
-           this.idBike=id;
-           this.batteryCapacity=batteryCapacity;
-           idleCount=0;
-           batteryLevel=0;
-           wsCharged=0;
-           chargesCount=0;
-           
+        this.company=company;
+        this.location=location;
+        this.targetLocation=targetLocation;
+        this.idBike=id;
+        this.batteryCapacity=batteryCapacity;
+        idleCount=0;
+        batteryLevel= batteryCapacity;
+        wsCharged=0;
+        chargesCount=0;
+        chargesCost=0;
+        docks =new ArrayList<Dock>();
+        rechargingLocation=null;
+
     }
 
     /**
@@ -55,42 +59,42 @@ public class ElectricBike
     {
         return idBike;    
     }
-    
+
     /*
      * @return The capacity of the electric bike in wh
      */
     public int getBatteryCapacity(){
         return batteryCapacity;
     }
-    
+
     /*
      * @return The battery level of the electric bike in wh
      */
     public int getBatteryLevel(){
         return batteryLevel;
     }
-    
+
     /*
      * @return The number of time the electric bike has been charged
      */
     public int getChargesCount(){
         return chargesCount;
     }
-    
+
     /*
      * @return The total cost of the charges that the bike has received
      */
     public float getChargesCost(){
         return chargesCost;
     }
-    
+
     /*
      * @return The time that the bike is not moving
      */
     public int getIdleCount(){
         return idleCount;
     }
-    
+
     /**
      * Get the current location.
      * @return Where this bike is.
@@ -99,7 +103,7 @@ public class ElectricBike
     {
         return location;    
     }
-    
+
     /**
      * Set the current location.
      * @param location Where it is. Must not be null.
@@ -107,7 +111,10 @@ public class ElectricBike
      */
     public void setLocation(Location location)
     {
-        //TODO: Complete this code
+        if (location==null){
+            throw new NullPointerException("La location no puede ser null");
+        }
+        this.location=location;   
     }
 
     /**
@@ -118,17 +125,16 @@ public class ElectricBike
     {
         return targetLocation;    
     }
-    
+
     /**
      * Get the temporary recharging location.
      * @return The {@link Location} of the next {@link BikeStation} to visit, or null if no recharge is planned.
      */
     public Location getRechargingLocation()
     {
-        //TODO: Complete this code
-        return null;
-    }
+        return rechargingLocation;
 
+    }
 
     /**
      * Set the required final target location.
@@ -137,7 +143,11 @@ public class ElectricBike
      */
     public void setTargetLocation(Location location)
     {
-        //TODO: Complete this code
+        if (location==null){
+            throw new NullPointerException("La location no puede ser null");
+        }
+        this.targetLocation=location;
+        calculateRoute();
     }
 
     /**
@@ -147,7 +157,11 @@ public class ElectricBike
      */
     public void calculateRoute()
     {
-        //TODO: Complete this code
+        if(enoughBattery()){
+            rechargingLocation=null;
+        }else{
+            calculateRechargingPosition();
+        }
     }
 
     /**
@@ -156,8 +170,8 @@ public class ElectricBike
      */
     public String getStringRoute()
     {
-       //TODO: Complete this code
-       return null;
+        //TODO: Complete this code
+        return null;
     }
 
     /**
@@ -166,8 +180,11 @@ public class ElectricBike
      */
     public boolean enoughBattery(   )
     {
-        //TODO: Complete this code
-        return true;
+        boolean enough=false;
+        if(batteryLevel >= distanceToTheTargetLocation()*5){
+            enough=true;
+        }
+        return enough;
     }
 
     /**
@@ -177,7 +194,7 @@ public class ElectricBike
      */
     public void calculateRechargingPosition()
     {
-        //TODO: Complete this code
+        
     }
 
     /**
@@ -185,8 +202,7 @@ public class ElectricBike
      * @return The distance to the target location.
      */
     public int distanceToTheTargetLocation()
-    {
-        //TODO: Complete this code 
+    { 
         return 0;
     }
 
@@ -225,7 +241,7 @@ public class ElectricBike
      */
     public void act(   )
     {
-       //TODO: Complete this code 
+        //TODO: Complete this code 
     }
 
     /**
@@ -233,7 +249,7 @@ public class ElectricBike
      * Ensures the battery level does not go below zero.
      */
     public void reduceBatteryLevel(){
-       //TODO: Complete this code 
+        //TODO: Complete this code 
     }
 
     /**
@@ -243,12 +259,11 @@ public class ElectricBike
     @Override
     public String toString(){
         String cad= "(ElectricBike: " + getIdBike() + ", "+
-        getBatteryCapacity() + "wh, "+ getBatteryLevel() +
-        "wh, "+ getChargesCount() +", " + 
-        getChargesCost()+ ", " + getIdleCount() + 
-        ", " + getLocation().toString() + ", " +getTargetLocation().toString() + ", " +  "getStringRoute()" + ")";
+            getBatteryCapacity() + "wh, "+ getBatteryLevel() +
+            "wh, "+ getChargesCount() +", " + 
+            getChargesCost()+ "€, " + getIdleCount() + 
+            ", " + getLocation().toString() + ", " +getTargetLocation().toString() + ", " +  "getStringRoute()" + ")";
         return cad;
     }
 
-   
 }

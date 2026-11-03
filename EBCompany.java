@@ -9,7 +9,9 @@ import java.util.*;
  */
 public class EBCompany  
 {
-    //TODO: Complete this code
+    private String name;
+    private List<ElectricBike> subscribedBikes;
+    private List<BikeStation> stations;
 
     /**
      * Constructor for objects of class EVCompany.
@@ -17,7 +19,9 @@ public class EBCompany
      */
     public EBCompany(String name)
     {
-        //TODO: Complete this code
+        this.name=name;
+        subscribedBikes= new ArrayList<ElectricBike>();
+        stations= new ArrayList<BikeStation>();
     }
 
     /**
@@ -26,7 +30,7 @@ public class EBCompany
      */
     public void addElectricBike(ElectricBike bike)
     {       
-        //TODO: Complete this code
+        subscribedBikes.add(bike);
     }
 
     
@@ -36,7 +40,7 @@ public class EBCompany
      */
     public void addBikeStation(BikeStation station)
     {       
-        //TODO: Complete this code
+        stations.add(station);
     }
     
     
@@ -47,8 +51,15 @@ public class EBCompany
      */
     public BikeStation getBikeStation(String id)
     {
-        //TODO: Complete this code
-        return null;
+       Iterator<BikeStation> iterator = stations.iterator();
+       BikeStation found = null;
+       while(found == null && iterator.hasNext()){
+           BikeStation station = iterator.next();
+           if(station.getId().equals(id)){
+               found = station;
+           }
+       }
+       return found;
     }
 
     /**
@@ -58,8 +69,15 @@ public class EBCompany
      */
     public BikeStation getBikeStation(Location location)
     {
-        //TODO: Complete this code
-        return null;
+        Iterator<BikeStation> iterator = stations.iterator();
+        BikeStation found = null;
+        while(found == null && iterator.hasNext()) {
+            BikeStation station = iterator.next();
+            if(station.getLocation().equals(location)) {
+                found = station;
+            }
+        }
+        return found;
     }
     
     
@@ -67,15 +85,15 @@ public class EBCompany
      * @return The total number of managed {@link BikeStation}s.
      */
     public int getNumberOfStations(){
-        //TODO: Complete this code
-        return 0;
+        return stations.size();
     }
     
     /**
      * Clears all managed bikes and stations, resetting the company to an empty state.
      */
     public void reset(){
-        //TODO: Complete this code
+        subscribedBikes.clear();
+        stations.clear();
     }
     
 }
