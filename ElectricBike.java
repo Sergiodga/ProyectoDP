@@ -12,6 +12,7 @@ public class ElectricBike
 {
     //Prueba actualizar repositorio a ver si cambia colega
     //dadadada
+    //Taqui taki
     private String idBike;
     private EBCompany company;
     private Location location;
