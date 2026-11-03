@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Models an Electric Vehicle Charging Station.
@@ -13,7 +14,7 @@ public class BikeStation
 {
     private String idStation;
     private Location location;
-    private ArrayList<Dock> docks;
+    private List<Dock> docks;
     //prueba
     //dassdadddadad
 
@@ -23,7 +24,7 @@ public class BikeStation
      */
     public BikeStation(  )
     {
-        //TODO: Complete this code
+        docks=new ArrayList<Dock>();
     }
 
     /**
@@ -44,8 +45,19 @@ public class BikeStation
      */
     public Dock getFreeDock()
     {
-       //TODO: Complete this code   
-        return docks.getLast();        
+       Dock aux=null;
+       boolean encontrado= false;
+       Iterator<Dock> it = docks.iterator();
+       while(it.hasNext() && !encontrado){
+           aux=it.next();
+           if(aux.getIfFree()){
+               encontrado=true;
+           }
+       }
+       if(!encontrado){
+           aux=null;
+       }
+        return aux;        
     }
 
     /**
@@ -68,7 +80,8 @@ public class BikeStation
      */
     public void addDock(Dock dock)
     {
-       //TODO: Complete this code
+       docks.add(dock);
+       // Collections.sort(docks, new ComparatorDockChargingSpeed);
     }
     
     /**
