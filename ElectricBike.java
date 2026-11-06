@@ -1,4 +1,4 @@
-import java.util.List;
+    import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +22,7 @@ public class ElectricBike
     private int batteryLevel;
     private int wsCharged;
     private int chargesCount;
-    private float chargesCost; //* //Tarifa del dock
+    private float chargesCost;
     private List<Dock> docks;
     private Location rechargingLocation;
 

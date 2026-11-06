@@ -86,7 +86,7 @@ public class Location
         }
         Location other1 = (Location) other;
         
-        return toString().equals(other1.toString());
+        return (this.x == other1.getX() && this.y == other1.getY());
     }
     
     /**
@@ -124,5 +124,21 @@ public class Location
     public int getY()
     {
         return y;
+    }
+    
+    /**
+     * Set the X coordinate.
+     */
+    public void setX(int x)
+    {
+        this.x=x;
+    }
+    
+    /**
+     * Set the Y coordinate.
+     */
+    public void setY(int y)
+    {
+        this.y=y;
     }
 }

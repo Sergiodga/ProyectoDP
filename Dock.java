@@ -29,33 +29,91 @@ public class Dock
         free=true;
     }
 
+    /**
+     * @return The id of the dock.
+     */
     public String getIdDock(){
         return idDock;
     }
     
+    /**
+     * @return The id of the charging speed dock.
+     */
     public int getChargingSpeed(){
         return chargingSpeed;
     }
     
+    /**
+     * @return The charging fee of the dock.
+     */
     public float getChargingFee(){
         return chargingFee;
     }
     
+    /**
+     * @return The total amount collected by the dock.
+     */
     public float getAmountCollected(){
         return amountCollected;
     }
     
+    /**
+     * Inserts a new electric bike to the list of bikes recharged by the dock
+     */
     public void insertBike(ElectricBike eb){
         bikesRecharged.add(eb);
     }
     
-    public void reloadAmountCollected(){
-        amountCollected=getNumerEVRecharged()*chargingFee;
+    /**
+     * Updates the amount collected by the dock
+     */
+    public void reloadAmountCollected(float whReloadCost){
+        amountCollected+=whReloadCost;
     }
     
+    /**
+     * @return If the dock is free (true) or not (false)
+     */
     public boolean getIfFree(){
         return free;
     }
+    
+    /**
+     * Sets the id of the dock
+     */
+    public void setIdDock(String idDock){
+        this.idDock=idDock;
+    }
+    
+    /**
+     * Sets the charging speed of the dock
+     */
+    public void setChargingSpeed(int chargingSpeed){
+        this.chargingSpeed=chargingSpeed;
+    }
+    
+    /**
+     * Sets the charging fee of the dock
+     */
+    public void setChargingFee(float chargingFee){
+        this.chargingFee=chargingFee;
+    }
+    
+    /**
+     * Sets if the dock is free or not
+     */
+    public void setFree(boolean free){
+        this.free=free;
+    }
+    
+    /**
+     * Sets the amount collected by the dock in case we want to use it
+     * @param amountCollected The amount collected to set
+     */
+    public void setAmountCollected(float amountCollected){
+        this.amountCollected=amountCollected;
+    }
+    
     
     /**
      * Returns a string representation of the dock, including its ID, speed, fee, and the number of EVs recharged.
@@ -65,7 +123,7 @@ public class Dock
     {
         String cad= "(Dock: "+ getIdDock() +
         ", " + getChargingSpeed() + "wh, " + getChargingFee() + "€, "
-        + getNumerEVRecharged()+ ", " + getAmountCollected()+ ")";
+        + getNumerEVRecharged()+ ", " + getAmountCollected()+ "€)";
         return cad;
     }    
 
@@ -83,10 +141,11 @@ public class Dock
      * //TODO complete the JavaDoc comments
      */
     public float recharge(ElectricBike EB){
-        EB.recharge();
+        int whReload= EB.getBatteryCapacity() - EB.getBatteryLevel();
+        float whReloadCost= whReload * chargingFee;
+        reloadAmountCollected(whReloadCost);
         insertBike(EB);
-        reloadAmountCollected();
-        return 0;
+        return whReloadCost;
     }
 
     //TODO: Complete this code
