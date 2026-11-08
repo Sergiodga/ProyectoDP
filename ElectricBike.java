@@ -49,6 +49,8 @@ public class ElectricBike
         chargesCost=0;
         docks =new ArrayList<Dock>();
         rechargingLocation=null;
+        
+        calculateRoute(); //Calculamos la ruta desde el inicio, así ya tenemos información sobre si hay rechargingStation o no
 
     }
 
@@ -247,7 +249,7 @@ public class ElectricBike
      */
     public String getStringRoute()
     {
-        calculateRoute(); //PUEDE SER QUE SE PONGA EN CONSTRUCTOR Y ASI NADA MAS EMPEZAR SABEMOS TODO YA Y ESTO HABRIA QUE QUITARLO
+        // calculateRoute(); PUEDE SER QUE SE PONGA EN CONSTRUCTOR Y ASI NADA MAS EMPEZAR SABEMOS TODO YA Y ESTO HABRIA QUE QUITARLO
         String finalRoute;
         if(rechargingLocation!=null){
             finalRoute= location.toString() + ", " + rechargingLocation.toString() + ", " + targetLocation.toString();
@@ -277,7 +279,33 @@ public class ElectricBike
      * Sets {@code rechargingLocation} to the chosen station's location.
      */
     public void calculateRechargingPosition(){
-        //FALTA TODO
+        List<BikeStation> allStations = company.getStations();
+        BikeStation bestStation= null;
+        int minTotalDistance=0;
+        
+        for(int i=0;i< allStations.size();i++){
+            BikeStation station = allStations.get(i);
+            Location stationLoc = station.getLocation();
+            int distanceToStation = location.distance(stationLoc); //Distancia de bici a estación
+            
+            if (batteryLevel >= distanceToStation * 5) {
+                int distanceToTarget = stationLoc.distance(targetLocation);
+                // Calculamos la distancia total de esta ruta
+                int totalDistance = distanceToStation + distanceToTarget;
+                
+                if (bestStation == null || totalDistance < minTotalDistance) {
+                    minTotalDistance = totalDistance;
+                    bestStation = station;
+                }
+            }
+        }
+        
+        if (bestStation != null) {
+            rechargingLocation = bestStation.getLocation();
+        } else {
+            // Si no hay ninguna estación a la que pueda llegar, la bici se quedará parada 
+            rechargingLocation = null;
+            }
     }
 
     /**
@@ -298,12 +326,18 @@ public class ElectricBike
     {
         BikeStation rechargingStation = company.getBikeStation(rechargingLocation);
         Dock chargingDock = rechargingStation.getFreeDock();
-        docks.add(chargingDock);
-        wsCharged=(batteryCapacity-batteryLevel);
-        incrementChargesCost(chargingDock.recharge(this));
-        incrementCharges();
-        batteryLevel=batteryCapacity;
-        calculateRoute();
+        if (chargingDock != null) {
+            docks.add(chargingDock);
+            wsCharged += (batteryCapacity - batteryLevel);
+            incrementChargesCost(chargingDock.recharge(this));
+            incrementCharges();
+            batteryLevel = batteryCapacity;
+            calculateRoute();
+        } else {
+            // Si no hay dock, se queda bloqueada para siempre quitando el destino y la estación.
+            rechargingLocation = null;
+            targetLocation = location;
+        }
     } 
 
             /**
@@ -341,7 +375,7 @@ public class ElectricBike
                 location=next;
                 reduceBatteryLevel();
                 if(location.equals(rechargingLocation)){
-                    // EN EL CASO EN EL QUE NO HAYA NINGUN DOCK LIBRE DEBE QUEDARSE AHI SIN MOVERSE HASTA EL FINAL DE LA SIMULACION
+                    // EN EL CASO EN EL QUE NO SE PUEDA ALCANZAR NINGUN DOCK LIBRE DEBE QUEDARSE AHI SIN MOVERSE HASTA EL FINAL DE LA SIMULACION
                     recharge();
                 }
             }
@@ -349,9 +383,7 @@ public class ElectricBike
                 next=location.nextLocation(targetLocation);
                 location=next;
                 reduceBatteryLevel();
-                if(location.equals(targetLocation)){
-                    //REGISTRA QUE HA LLEGADO A SU DESTINO
-                }
+                //if(location.equals(targetLocation) NO HACE FALTA COMPROBAR ESTO YA QUE AL SIGUIENTE ACT DIRECTAMENTE AUMENTARIA idleCount y no se movería más
             }
         }
         

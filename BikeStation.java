@@ -15,8 +15,6 @@ public class BikeStation
     private String idStation;
     private Location location;
     private List<Dock> docks;
-    //prueba
-    //dassdadddadad
 
     /**
      * Constructor for objects of class BikeStation.

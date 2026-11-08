@@ -12,7 +12,8 @@ public class EBCompany
     private String name;
     private List<ElectricBike> subscribedBikes;
     private List<BikeStation> stations;
-
+    
+    public static final int MOVINGCOST = 5;
     /**
      * Constructor for objects of class EVCompany.
      * @param name The name of the company.
@@ -33,6 +34,50 @@ public class EBCompany
         subscribedBikes.add(bike);
     }
 
+    /**
+     * @return The name of the company.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name of the company.
+     * @param name The new name of the company.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return The list of subscribed electric bikes.
+     */
+    public List<ElectricBike> getSubscribedBikes() {
+        return subscribedBikes;
+    }
+
+    /**
+     * Sets the list of subscribed electric bikes.
+     * @param subscribedBikes The new list of bikes.
+     */
+    public void setSubscribedBikes(List<ElectricBike> subscribedBikes) {
+        this.subscribedBikes = subscribedBikes;
+    }
+
+    /**
+     * @return The list of bike stations managed by the company.
+     */
+    public List<BikeStation> getStations() {
+        return stations;
+    }
+
+    /**
+     * Sets the list of bike stations managed by the company.
+     * @param stations The new list of bike stations.
+     */
+    public void setStations(List<BikeStation> stations) {
+        this.stations = stations;
+    }
     
     /**
      * Adds a {@link BikeStation} to the company's network.
@@ -96,4 +141,13 @@ public class EBCompany
         stations.clear();
     }
     
+    
+    /**
+     * Returns a string representation of the company, showing its name.
+     * @return A string with the format "(Compañia <name>)"
+     */
+    @Override
+    public String toString() {
+        return "(Compañia " + name + ")";
+    }
 }
