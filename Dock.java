@@ -114,7 +114,6 @@ public class Dock
         this.amountCollected=amountCollected;
     }
     
-    
     /**
      * Returns a string representation of the dock, including its ID, speed, fee, and the number of EVs recharged.
      * @return A string representation of the dock.

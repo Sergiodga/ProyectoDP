@@ -103,7 +103,85 @@ public class ElectricBike
     {
         return location;    
     }
+    
+    /**
+     * Set the id of the bike
+     * @param idBike The new ID string for the electric bike.
+     */
+    public void setIdBike(String idBike)
+    {
+        this.idBike=idBike;  
+    }
+    
+    /**
+     * Set the company the bike belongs to
+     * @param company The EBCompany that manages this bike.
+     */
+    public void setCompany(EBCompany company)
+    {
+        this.company=company;  
+    }
+    
+    /**
+     * Sets the number of turns the bike has remained idle at its destination.
+     * @param idleCount The new idle turn count.
+     */
+    public void setIdleCount(int idleCount)
+    {
+        this.idleCount=idleCount;
+    }
+    
+    /**
+     * Set the bike's battery capacity
+     * @param batteryCapacity The maximum capacity in wh.
+     */
+    public void setBatteryCapacity(int batteryCapacity)
+    {
+        this.batteryCapacity=batteryCapacity;
+    }
+    
+    /**
+     * Set the bike's battery level
+     * @param batteryLevel The current level in wh.
+     */
+    public void setBatteryLevel(int batteryLevel)
+    {
+        this.batteryLevel=batteryLevel;
+    }
+    
+    /**
+     * Set the Ws charged
+     * @param wsCharged The total wh charged.
+     */
+    public void setWsCharged(int wsCharged)
+    {
+        this.wsCharged=wsCharged;
+    }
+    
+    /**
+     * Sets the number of times the electric bike has been charged.
+     * @param chargesCount The number of charges.
+     */
+    public void setChargesCount(int chargesCount) {
+        this.chargesCount = chargesCount;
+    }
 
+    /**
+     * Sets the total cost of the charges that the bike has received.
+     * @param chargesCost The total cost in euros.
+     */
+    public void setChargesCost(float chargesCost) {
+        this.chargesCost = chargesCost;
+    }
+
+    /**
+     * Sets the recharging location for the bike.
+     * @param rechargingLocation The Location of the BikeStation to visit.
+     */
+    public void setRechargingLocation(Location rechargingLocation) {
+        this.rechargingLocation = rechargingLocation;
+    }
+    
     /**
      * Set the current location.
      * @param location Where it is. Must not be null.
@@ -133,7 +211,6 @@ public class ElectricBike
     public Location getRechargingLocation()
     {
         return rechargingLocation;
-
     }
 
     /**
@@ -170,8 +247,15 @@ public class ElectricBike
      */
     public String getStringRoute()
     {
-        //TODO: Complete this code
-        return null;
+        calculateRoute(); //PUEDE SER QUE SE PONGA EN CONSTRUCTOR Y ASI NADA MAS EMPEZAR SABEMOS TODO YA Y ESTO HABRIA QUE QUITARLO
+        String finalRoute;
+        if(rechargingLocation!=null){
+            finalRoute= location.toString() + ", " + rechargingLocation.toString() + ", " + targetLocation.toString();
+        }
+        else{
+            finalRoute= location.toString() + ", " + targetLocation.toString();
+        }
+        return finalRoute;
     }
 
     /**
@@ -192,9 +276,8 @@ public class ElectricBike
      * if the bike cannot reach the final target directly.
      * Sets {@code rechargingLocation} to the chosen station's location.
      */
-    public void calculateRechargingPosition()
-    {
-        
+    public void calculateRechargingPosition(){
+        //FALTA TODO
     }
 
     /**
@@ -203,35 +286,42 @@ public class ElectricBike
      */
     public int distanceToTheTargetLocation()
     { 
-        return 0;
+        return location.distance(targetLocation);
     }
 
-    /**
+        /**
      * Simulates the recharging process when the bike arrives at a {@code rechargingLocation}.
      * The battery is charged to full capacity, the cost is calculated, and the route is recalculated.
      * //TODO complete the JavaDoc comments
      */
     public void recharge(   )
     {
-        //TODO: Complete this code 
+        BikeStation rechargingStation = company.getBikeStation(rechargingLocation);
+        Dock chargingDock = rechargingStation.getFreeDock();
+        docks.add(chargingDock);
+        wsCharged=(batteryCapacity-batteryLevel);
+        incrementChargesCost(chargingDock.recharge(this));
+        incrementCharges();
+        batteryLevel=batteryCapacity;
+        calculateRoute();
     } 
 
-    /**
+            /**
      * Increments the count of recharges performed by this bike.
      * //TODO complete the JavaDoc comments
      */
     public void incrementCharges()
     {
-        //TODO: Complete this code 
+        chargesCount++;
     }
 
     /**
      * Adds a cost amount to the total charges cost.
      * //TODO complete the JavaDoc comments
      */
-    public void incrementChargesCost(   )
+    public void incrementChargesCost(float cost)
     {
-        //TODO: Complete this code 
+        chargesCost+= cost;
     }   
 
     /**
@@ -241,7 +331,30 @@ public class ElectricBike
      */
     public void act(   )
     {
-        //TODO: Complete this code 
+        if(location.equals(targetLocation)){
+            idleCount+=1;
+        }
+        else {
+            Location next=null;
+            if(rechargingLocation!=null){
+                next= location.nextLocation(rechargingLocation);
+                location=next;
+                reduceBatteryLevel();
+                if(location.equals(rechargingLocation)){
+                    // EN EL CASO EN EL QUE NO HAYA NINGUN DOCK LIBRE DEBE QUEDARSE AHI SIN MOVERSE HASTA EL FINAL DE LA SIMULACION
+                    recharge();
+                }
+            }
+            else{
+                next=location.nextLocation(targetLocation);
+                location=next;
+                reduceBatteryLevel();
+                if(location.equals(targetLocation)){
+                    //REGISTRA QUE HA LLEGADO A SU DESTINO
+                }
+            }
+        }
+        
     }
 
     /**
@@ -249,7 +362,9 @@ public class ElectricBike
      * Ensures the battery level does not go below zero.
      */
     public void reduceBatteryLevel(){
-        //TODO: Complete this code 
+        if(batteryLevel>=5){
+            batteryLevel-=5;
+        }
     }
 
     /**
@@ -262,7 +377,7 @@ public class ElectricBike
             getBatteryCapacity() + "wh, "+ getBatteryLevel() +
             "wh, "+ getChargesCount() +", " + 
             getChargesCost()+ "€, " + getIdleCount() + 
-            ", " + getLocation().toString() + ", " +getTargetLocation().toString() + ", " +  "getStringRoute()" + ")";
+            ", " +  getStringRoute() + ")";
         return cad;
     }
 
