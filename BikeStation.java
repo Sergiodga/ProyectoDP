@@ -62,12 +62,13 @@ public class BikeStation
         return idStation;
     }
     
-    /*
+    /**
      * @return The location of the bike station
      */
     public Location getLocation(){
         return location;
     }
+    
     /**
      * Adds a new {@link Dock} to the station.
      * @param dock The new Dock unit.
@@ -96,7 +97,9 @@ public class BikeStation
        
     }
     
-    public int getNumberOfBikesRecharged(){
+    /**
+     * @return the number of bikes recharged
+     */public int getNumberOfBikesRecharged(){
         int total =0;
         for(Dock dock : docks) {
             total+= dock.getNumerEVRecharged();
