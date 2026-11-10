@@ -43,19 +43,15 @@ public class BikeStation
      */
     public Dock getFreeDock()
     {
-       Dock aux=null;
-       boolean encontrado= false;
        Iterator<Dock> it = docks.iterator();
-       while(it.hasNext() && !encontrado){
-           aux=it.next();
-           if(aux.getIfFree()){
-               encontrado=true;
+       Dock found = null;
+       while( found == null && it.hasNext()){
+           Dock dock = it.next();
+           if(dock.getIfFree()){
+               found = dock;
            }
        }
-       if(!encontrado){
-           aux=null;
-       }
-        return aux;        
+       return found;
     }
 
     /**
@@ -78,8 +74,11 @@ public class BikeStation
      */
     public void addDock(Dock dock)
     {
-       docks.add(dock);
-       // Collections.sort(docks, new ComparatorDockChargingSpeed);
+       if( dock != null){
+           docks.add(dock);
+           //Collections.sort(docks, new ComparatorDockChargingSpeed());
+           
+        }
     }
     
     /**
@@ -89,9 +88,29 @@ public class BikeStation
      */
     public void setLocation(Location location)
     {
-       this.location= location;  
+       
+        if(location == null){
+            throw new NullPointerException(" Location no puede ser null");
+        }
+        this.location= location;
+       
     }
-
+    
+    public int getNumberOfBikesRecharged(){
+        int total =0;
+        for(Dock dock : docks) {
+            total+= dock.getNumerEVRecharged();
+        }
+        return total;
+        
+    }
+    
+    /**
+     * @return 
+     */
+    public String toString(){
+        return "(BikeStation: " + idStation + ", " + getNumberOfBikesRecharged() + "," + location + ")";
+    }
     //TODO complete the rest of the code
 
 }
