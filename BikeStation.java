@@ -35,7 +35,7 @@ public class BikeStation
         this.location=location;
         docks=new ArrayList<Dock>();
     }
-    
+
     /**
      * Retrieves the first free {@link Dock} found at the station.
      * @return A free {@link Dock}, or possibly throws an exception if none are found (depending on stream implementation details).
@@ -43,15 +43,30 @@ public class BikeStation
      */
     public Dock getFreeDock()
     {
-       Iterator<Dock> it = docks.iterator();
-       Dock found = null;
-       while( found == null && it.hasNext()){
-           Dock dock = it.next();
-           if(dock.getIfFree()){
-               found = dock;
-           }
-       }
-       return found;
+        Iterator<Dock> it = docks.iterator();
+        Dock found = null;
+        while( found == null && it.hasNext()){
+            Dock dock = it.next();
+            if(dock.getIfFree()){
+                found = dock;
+            }
+        }
+        return found;
+    }
+
+    /**
+     * @param idDock the identificador of the docks to look for
+     * @return {@link Dock} with that identificator, or {
+     */public Dock getDock(String idDock){
+        Iterator<Dock> it = docks.iterator();
+        Dock found = null;
+        while(found==null && it.hasNext()){
+            Dock dock = it.next();
+            if(dock.getIdDock().equals(idDock)){
+                found = dock;
+            }
+        }
+        return found;
     }
 
     /**
@@ -61,27 +76,27 @@ public class BikeStation
     {  
         return idStation;
     }
-    
+
     /**
      * @return The location of the bike station
      */
     public Location getLocation(){
         return location;
     }
-    
+
     /**
      * Adds a new {@link Dock} to the station.
      * @param dock The new Dock unit.
      */
     public void addDock(Dock dock)
     {
-       if( dock != null){
-           docks.add(dock);
-           //Collections.sort(docks, new ComparatorDockChargingSpeed());
-           
+        if( dock != null){
+            docks.add(dock);
+            //Collections.sort(docks, new ComparatorDockChargingSpeed());
+
         }
     }
-    
+
     /**
      * Set the current location of the charging station.
      * @param location Where it is. Must not be null.
@@ -89,28 +104,29 @@ public class BikeStation
      */
     public void setLocation(Location location)
     {
-       
+
         if(location == null){
             throw new NullPointerException(" Location no puede ser null");
         }
         this.location= location;
-       
+
     }
-    
+
     /**
-     * @return the number of bikes recharged
+     * @return the number recharged performed in the docks of the station
      */public int getNumberOfBikesRecharged(){
         int total =0;
         for(Dock dock : docks) {
             total+= dock.getNumerEVRecharged();
         }
         return total;
-        
+
     }
-    
+
     /**
-     * @return 
+     * @return the representation of bikeStation
      */
+    @Override
     public String toString(){
         return "(BikeStation: " + idStation + ", " + getNumberOfBikesRecharged() + "," + location + ")";
     }
