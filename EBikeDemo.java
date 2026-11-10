@@ -66,16 +66,20 @@ public class EBikeDemo
         for(int step = 0; step < MAXSTEPS; step++) {
             step(step);
         }
-        //TODO: Complete this code (show the final info)
+        showFinalInfo();
     }
 
-    /**
+        /**
      * Run the demo for one step by requesting all bikes to act.
      * @param step The current step number of the simulation.
      */
     public void step(int step)
     {
         //TODO: Complete this code: for each bike, act
+        for(ElectricBike bici: bikes){
+            bici.act();
+            System.out.println("(step: "+ step +" - " + bici.toString()+")");
+        }
     }
 
     /**
@@ -111,8 +115,10 @@ public class EBikeDemo
         for (int i=0;i < DEMO.getNumBikesToCreate();i++){
             ElectricBike eb = new ElectricBike(company, locations[i],targetLocations[i],("EBCC"+i),(i+1)*15);
             bikes.add(eb);
+            company.addElectricBike(eb);
         }
         // TODO: Complete the code here
+        Collections.sort(bikes, new ComparatorEBIdBike());
 
     }
     
@@ -127,8 +133,8 @@ public class EBikeDemo
         for (int i=0;i<DEMO.getNumStationsToCreate();i++){
             company.addBikeStation(new BikeStation("CC0" + i,locations[i]));
         }
-        
         // TODO: Complete the code here
+        Collections.sort(stations, new ComparatorBikeStationId());
     }
 
     /**
@@ -140,10 +146,11 @@ public class EBikeDemo
         for (BikeStation station : stations){
             for (int i=0;i<DEMO.getNumDocksToCreate();i++){
                 // Creates Docks with varying speed and fee based on index 'i'.
-                Dock d = new Dock(station.getId() + "_00" + i,((i+1)*20),((i+1)*0.20f));
                 station.addDock(new Dock(station.getId() + "_00" + i,((i+1)*20),((i+1)*0.20f)));
             }
-            // TODO: Complete the code here
+            //No hace falta ordenar posteriormente ya que se ordena internamente en el método addDock de BikeStation (así es independiente
+            // y no depende del que la use para que los docks esten o no ordenados teniendo que llamar de forma externa a algun método ordenar
+            // o por el estilo
         }    
     }
     
@@ -153,8 +160,9 @@ public class EBikeDemo
       * This determines if an intermediate recharging stop is necessary.
       */
      private void configureRoutes() {
-        // TODO: Complete the code here
-
+        for(ElectricBike bici : bikes){
+            bici.calculateRoute();
+        }
      }
 
     /**
@@ -176,7 +184,10 @@ public class EBikeDemo
         System.out.println("( Bike Stations )");
         System.out.println("(-------------------)");
        
-        // TODO: Complete the code here
+        for(BikeStation bs:stations){
+            System.out.println(bs.toString());
+            //for(Dock d:bs.get
+        }
 
         System.out.println("(------------------)");
         System.out.println("( Simulation start )");

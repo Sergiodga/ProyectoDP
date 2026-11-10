@@ -49,9 +49,6 @@ public class ElectricBike
         chargesCost=0;
         docks =new ArrayList<Dock>();
         rechargingLocation=null;
-        
-        calculateRoute(); //Calculamos la ruta desde el inicio, así ya tenemos información sobre si hay rechargingStation o no
-
     }
 
     /**

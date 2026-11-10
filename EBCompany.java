@@ -85,7 +85,9 @@ public class EBCompany
      */
     public void addBikeStation(BikeStation station)
     {       
-        stations.add(station);
+        if(station!=null){
+            stations.add(station);
+        }
     }
     
     
