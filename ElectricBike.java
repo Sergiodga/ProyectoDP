@@ -1,4 +1,4 @@
-    import java.util.List;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -51,6 +51,10 @@ public class ElectricBike
         rechargingLocation=null;
     }
 
+    public List<Dock> getDocks() {
+        return new ArrayList<Dock>(docks);
+    }
+
     /**
      * @return The id of the electric bike.
      */
@@ -59,35 +63,35 @@ public class ElectricBike
         return idBike;    
     }
 
-    /*
+    /**
      * @return The capacity of the electric bike in wh
      */
     public int getBatteryCapacity(){
         return batteryCapacity;
     }
 
-    /*
+    /**
      * @return The battery level of the electric bike in wh
      */
     public int getBatteryLevel(){
         return batteryLevel;
     }
 
-    /*
+    /**
      * @return The number of time the electric bike has been charged
      */
     public int getChargesCount(){
         return chargesCount;
     }
 
-    /*
+    /**
      * @return The total cost of the charges that the bike has received
      */
     public float getChargesCost(){
         return chargesCost;
     }
 
-    /*
+    /**
      * @return The time that the bike is not moving
      */
     public int getIdleCount(){
@@ -102,7 +106,7 @@ public class ElectricBike
     {
         return location;    
     }
-    
+
     /**
      * Set the id of the bike
      * @param idBike The new ID string for the electric bike.
@@ -111,7 +115,7 @@ public class ElectricBike
     {
         this.idBike=idBike;  
     }
-    
+
     /**
      * Set the company the bike belongs to
      * @param company The EBCompany that manages this bike.
@@ -120,7 +124,7 @@ public class ElectricBike
     {
         this.company=company;  
     }
-    
+
     /**
      * Sets the number of turns the bike has remained idle at its destination.
      * @param idleCount The new idle turn count.
@@ -129,7 +133,7 @@ public class ElectricBike
     {
         this.idleCount=idleCount;
     }
-    
+
     /**
      * Set the bike's battery capacity
      * @param batteryCapacity The maximum capacity in wh.
@@ -138,7 +142,7 @@ public class ElectricBike
     {
         this.batteryCapacity=batteryCapacity;
     }
-    
+
     /**
      * Set the bike's battery level
      * @param batteryLevel The current level in wh.
@@ -147,7 +151,7 @@ public class ElectricBike
     {
         this.batteryLevel=batteryLevel;
     }
-    
+
     /**
      * Set the Ws charged
      * @param wsCharged The total wh charged.
@@ -156,7 +160,7 @@ public class ElectricBike
     {
         this.wsCharged=wsCharged;
     }
-    
+
     /**
      * Sets the number of times the electric bike has been charged.
      * @param chargesCount The number of charges.
@@ -180,7 +184,7 @@ public class ElectricBike
     public void setRechargingLocation(Location rechargingLocation) {
         this.rechargingLocation = rechargingLocation;
     }
-    
+
     /**
      * Set the current location.
      * @param location Where it is. Must not be null.
@@ -279,30 +283,30 @@ public class ElectricBike
         List<BikeStation> allStations = company.getStations();
         BikeStation bestStation= null;
         int minTotalDistance=0;
-        
+
         for(int i=0;i< allStations.size();i++){
             BikeStation station = allStations.get(i);
             Location stationLoc = station.getLocation();
             int distanceToStation = location.distance(stationLoc); //Distancia de bici a estación
-            
+
             if (batteryLevel >= distanceToStation * 5) {
                 int distanceToTarget = stationLoc.distance(targetLocation);
                 // Calculamos la distancia total de esta ruta
                 int totalDistance = distanceToStation + distanceToTarget;
-                
+
                 if (bestStation == null || totalDistance < minTotalDistance) {
                     minTotalDistance = totalDistance;
                     bestStation = station;
                 }
             }
         }
-        
+
         if (bestStation != null) {
             rechargingLocation = bestStation.getLocation();
         } else {
             // Si no hay ninguna estación a la que pueda llegar, la bici se quedará parada 
             rechargingLocation = null;
-            }
+        }
     }
 
     /**
@@ -314,7 +318,7 @@ public class ElectricBike
         return location.distance(targetLocation);
     }
 
-        /**
+    /**
      * Simulates the recharging process when the bike arrives at a {@code rechargingLocation}.
      * The battery is charged to full capacity, the cost is calculated, and the route is recalculated.
      * //TODO complete the JavaDoc comments
@@ -337,7 +341,7 @@ public class ElectricBike
         }
     } 
 
-            /**
+    /**
      * Increments the count of recharges performed by this bike.
      * //TODO complete the JavaDoc comments
      */
@@ -383,7 +387,7 @@ public class ElectricBike
                 //if(location.equals(targetLocation) NO HACE FALTA COMPROBAR ESTO YA QUE AL SIGUIENTE ACT DIRECTAMENTE AUMENTARIA idleCount y no se movería más
             }
         }
-        
+
     }
 
     /**
