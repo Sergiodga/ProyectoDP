@@ -18,6 +18,17 @@ public class ComparatorDocksChargingSpeed implements Comparator<Dock>
      * before, is equivalent to, or goes after the second one.
      */
     public int compare(Dock d1, Dock d2){
-        return Integer.compare(d2.getChargingSpeed(), d1.getChargingSpeed());
+        int result=0;
+        if(d1.getChargingSpeed()==d2.getChargingSpeed()){
+            ComparatorDocksChargingFee chargingFeeComparator= new ComparatorDocksChargingFee();
+            result= chargingFeeComparator.compare(d1, d2);
+        }
+        else if (d1.getChargingSpeed() > d2.getChargingSpeed()){
+            result=-1;
+        }
+        else{
+            result=1;
+        }
+        return result;
     }
 }

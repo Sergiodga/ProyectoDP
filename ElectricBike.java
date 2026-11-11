@@ -49,7 +49,7 @@ public class ElectricBike
     }
 
     public List<Dock> getDocks() {
-        return new ArrayList<Dock>(docks);
+        return docks;
     }
 
     /**
@@ -226,7 +226,15 @@ public class ElectricBike
         this.targetLocation=location;
         calculateRoute();
     }
-
+    
+    /**
+     * Sets the list of docks where the electric bike has recharged.
+     * @param docks The new list of {@link Dock} units.
+     */
+    public void setDocks(List<Dock> docks) {
+        this.docks = docks;
+    }
+    
     /**
      * Calculates the optimal route for the bike. 
      * If there isn't enough battery to reach the target, it attempts to find an intermediate 
@@ -247,7 +255,6 @@ public class ElectricBike
      */
     public String getStringRoute()
     {
-        // calculateRoute(); PUEDE SER QUE SE PONGA EN CONSTRUCTOR Y ASI NADA MAS EMPEZAR SABEMOS TODO YA Y ESTO HABRIA QUE QUITARLO
         String finalRoute;
         if(rechargingLocation!=null){
             finalRoute= location.toString() + ", " + rechargingLocation.toString() + ", " + targetLocation.toString();
@@ -260,11 +267,11 @@ public class ElectricBike
 
     /**
      * Checks if the current battery level is sufficient to cover a given distance.
-     * //TODO complete the JavaDoc comments
+     * @return if the battery level is enough to reach the target, {@code false} otherwise.
      */
     public boolean enoughBattery(   )
     {
-        boolean enough=false;
+            boolean enough=false;
         if(batteryLevel >= distanceToTheTargetLocation()*5){
             enough=true;
         }
@@ -279,7 +286,8 @@ public class ElectricBike
     public void calculateRechargingPosition(){
         List<BikeStation> allStations = company.getStations();
         BikeStation bestStation= null;
-        int minTotalDistance=0;
+        int minDistanceToBike = 0;
+        int minDistanceToTarget= 0;
 
         for(int i=0;i< allStations.size();i++){
             BikeStation station = allStations.get(i);
@@ -288,12 +296,17 @@ public class ElectricBike
 
             if (batteryLevel >= distanceToStation * 5) {
                 int distanceToTarget = stationLoc.distance(targetLocation);
-                // Calculamos la distancia total de esta ruta
-                int totalDistance = distanceToStation + distanceToTarget;
 
-                if (bestStation == null || totalDistance < minTotalDistance) {
-                    minTotalDistance = totalDistance;
+                if (bestStation == null || distanceToStation < minDistanceToBike) {
+                    minDistanceToBike = distanceToStation;
+                    minDistanceToTarget=distanceToTarget;
                     bestStation = station;
+                }
+                else if (distanceToStation == minDistanceToBike) {
+                    if (distanceToTarget < minDistanceToTarget) {
+                        minDistanceToTarget = distanceToTarget;
+                        bestStation = station;
+                    }
                 }
             }
         }
@@ -318,7 +331,6 @@ public class ElectricBike
     /**
      * Simulates the recharging process when the bike arrives at a {@code rechargingLocation}.
      * The battery is charged to full capacity, the cost is calculated, and the route is recalculated.
-     * //TODO complete the JavaDoc comments
      */
     public void recharge(   )
     {
@@ -330,7 +342,7 @@ public class ElectricBike
             incrementChargesCost(chargingDock.recharge(this));
             incrementCharges();
             batteryLevel = batteryCapacity;
-            calculateRoute();
+            rechargingLocation = null;
         } else {
             // Si no hay dock, se queda bloqueada para siempre quitando el destino y la estación.
             rechargingLocation = null;
@@ -340,7 +352,6 @@ public class ElectricBike
 
     /**
      * Increments the count of recharges performed by this bike.
-     * //TODO complete the JavaDoc comments
      */
     public void incrementCharges()
     {
@@ -349,7 +360,7 @@ public class ElectricBike
 
     /**
      * Adds a cost amount to the total charges cost.
-     * //TODO complete the JavaDoc comments
+     * @param cost The cost of the current recharge to be added, in euros.
      */
     public void incrementChargesCost(float cost)
     {
@@ -359,7 +370,6 @@ public class ElectricBike
     /**
      * Carries out a single step of the bike's actions.
      * Moves one step towards the target (recharging or final) or stays idle.
-     * //TODO complete the JavaDoc comments
      */
     public void act(   )
     {

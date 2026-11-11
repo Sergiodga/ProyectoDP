@@ -14,9 +14,20 @@ public class ComparatorDocksChargingFee implements Comparator<Dock>
      * @param c1 The first dock's charging fee to be compared.
      * @param c2 The second dock's charging fee to be compared.
      * @return A negative integer, zero, or a positive integer as the first 
-     * dock's charging fee is lexicographically less than, equal to, or greater than the second.
+     * dock's charging fee is less than, equal to, or greater than the second.
      */
     public int compare(Dock c1, Dock c2){  
-        return Float.compare(c1.getChargingFee(), c2.getChargingFee());
+        int result=0;
+        if(c1.getChargingFee()==c2.getChargingFee()){
+            ComparatorDocksId IdComparator= new ComparatorDocksId();
+            result= IdComparator.compare(c1, c2);
+        }
+        else if (c1.getChargingFee() < c2.getChargingFee()){
+            result=-1;
+        }
+        else{
+            result=1;
+        }
+        return result;
     } 
 }

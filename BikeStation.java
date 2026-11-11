@@ -87,22 +87,14 @@ public class BikeStation
     /**
      * Adds a new {@link Dock} to the station.
      * @param dock The new Dock unit.
-     * @throws NullPointerException If dock is null.
-     * @throws IllegalArgumentException If the station already has a dock with the same identifier.
      */
     public void addDock(Dock dock)
     {
-        if(dock == null){
-            throw new NullPointerException("The dock must not be null");
+        if(dock != null){
+            docks.add(dock);
+            Collections.sort(docks, new ComparatorDocksChargingSpeed()); //INTERNAMENTE YA ORDENA EN CASCADA POR EL RESTO DE CONDICIONES, NO HACEN FALTA MAS LLAMADAS
 
         }
-        if(getDock(dock.getIdDock()) != null){
-            throw new IllegalArgumentException("Duplicated dock id: " + dock.getIdDock());
-        }
-        docks.add(dock);
-        Collections.sort(docks, new ComparatorDocksChargingSpeed());
-        Collections.sort(docks, new ComparatorDocksChargingFee());
-        Collections.sort(docks, new ComparatorDocksId());
     }
 
     /**
@@ -112,13 +104,27 @@ public class BikeStation
      */
     public void setLocation(Location location)
     {
-        if(location == null){
-            throw new NullPointerException(" Location no puede ser null");
+        if(location != null){
+            this.location= location;
         }
-        this.location= location;
-
+    }
+    
+    /**
+     * Sets the unique identifier of the charging station.
+     * @param idStation The new ID string for the station.
+     */
+    public void setIdStation(String idStation) {
+        this.idStation = idStation;
     }
 
+    /**
+     * Sets the list of {@link Dock} units available at the station.
+     * @param docks The new list of docks.
+     */
+    public void setDocks(List<Dock> docks) {
+        this.docks = docks;
+    }
+    
     /**
      * @return the number recharged performed in the docks of the station
      */public int getNumberOfBikesRecharged(){
@@ -127,7 +133,6 @@ public class BikeStation
             total+= dock.getNumerEVRecharged();
         }
         return total;
-
     }
 
     /**
