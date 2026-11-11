@@ -100,7 +100,7 @@ public class BikeStation
             throw new IllegalArgumentException("Duplicated dock id: " + dock.getIdDock());
         }
         docks.add(dock);
-        //Collections.sort(docks, new ComparatorDocksChargingSpeed());
+        Collections.sort(docks, new ComparatorDocksChargingSpeed());
     }
 
     /**
