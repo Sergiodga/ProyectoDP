@@ -15,25 +15,24 @@ public class BikeStation
     private String idStation;
     private Location location;
     private List<Dock> docks;
-
     /**
      * Constructor for objects of class BikeStation.
-     * //TODO complete the JavaDoc comments
-     */
-    public BikeStation(  )
-    {
-        docks=new ArrayList<Dock>();
-    }
-
-    /**
-     * Constructor for objects of class BikeStation.
-     * //TODO complete the JavaDoc comments
+     * @param id the unique identifier of the station.
+     * @param location the{@link Location} of the station in the city.
      */
     public BikeStation(String id, Location location)
     {
         idStation=id;
         this.location=location;
         docks=new ArrayList<Dock>();
+    }
+
+    /**
+     * Gets the docks of the station.
+     * @return a view of the docks of the station, sorted by charging speed(descending), charging fee(ascending) and identifier (ascending).
+     */
+    public List<Dock> getDocks(){
+        return new ArrayList<Dock>(docks);
     }
 
     /**
@@ -56,8 +55,9 @@ public class BikeStation
 
     /**
      * @param idDock the identificador of the docks to look for
-     * @return {@link Dock} with that identificator, or {
-     */public Dock getDock(String idDock){
+     * @return {@link Dock} with that identificator, or {@code null} if the station has no such dock. {
+     */
+    public Dock getDock(String idDock){
         Iterator<Dock> it = docks.iterator();
         Dock found = null;
         while(found==null && it.hasNext()){
@@ -87,14 +87,20 @@ public class BikeStation
     /**
      * Adds a new {@link Dock} to the station.
      * @param dock The new Dock unit.
+     * @throws NullPointerException If dock is null.
+     * @throws IllegalArgumentException If the station already has a dock with the same identifier.
      */
     public void addDock(Dock dock)
     {
-        if( dock != null){
-            docks.add(dock);
-            //Collections.sort(docks, new ComparatorDockChargingSpeed());
+        if(dock == null){
+            throw new NullPointerException("The dock must not be null");
 
         }
+        if(getDock(dock.getIdDock()) != null){
+            throw new IllegalArgumentException("Duplicated dock id: " + dock.getIdDock());
+        }
+        docks.add(dock);
+        //Collections.sort(docks, new ComparatorDocksChargingSpeed());
     }
 
     /**
@@ -104,7 +110,6 @@ public class BikeStation
      */
     public void setLocation(Location location)
     {
-
         if(location == null){
             throw new NullPointerException(" Location no puede ser null");
         }
@@ -124,12 +129,10 @@ public class BikeStation
     }
 
     /**
-     * @return the representation of bikeStation
+     * @return a string representation of bikeStation
      */
     @Override
     public String toString(){
-        return "(BikeStation: " + idStation + ", " + getNumberOfBikesRecharged() + "," + location + ")";
+        return "(BikeStation: " + idStation + ", " + getNumberOfBikesRecharged() + ", " + location + ")";
     }
-    //TODO complete the rest of the code
-
 }
