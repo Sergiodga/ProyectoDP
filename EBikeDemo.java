@@ -76,7 +76,7 @@ public class EBikeDemo
     {
         //TODO: Complete this code: for each bike, act
         for(ElectricBike bici: bikes){
-            bici.act();
+            bici.act(step);
             System.out.println("(step: "+ step +" - " + bici.toString()+")");
         }
     }
@@ -211,7 +211,7 @@ public class EBikeDemo
             System.out.println(eb.toString());
 
             for(Dock dock : eb.getDocks()) {
-                System.out.println("(Dock: " + dock.getIdDock() + ")");
+                System.out.println(dock.getIdDock() + ")");
             }
         }
 
@@ -224,9 +224,9 @@ public class EBikeDemo
             System.out.println(station.toString());
 
             for(Dock dock : station.getDocks()) {
-                System.out.println(dock.toString());
+                System.out.println( dock.toString());
                 for(ElectricBike eb : dock.getBikesRecharged()) {
-                    System.out.println(eb.getIdBike());
+                    System.out.println( eb.toString());
                 }
             }
         }     

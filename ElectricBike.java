@@ -331,18 +331,25 @@ public class ElectricBike
     /**
      * Simulates the recharging process when the bike arrives at a {@code rechargingLocation}.
      * The battery is charged to full capacity, the cost is calculated, and the route is recalculated.
+     * @param step The step number the bike is on.
      */
-    public void recharge(   )
+    public void recharge(int step)
     {
         BikeStation rechargingStation = company.getBikeStation(rechargingLocation);
         Dock chargingDock = rechargingStation.getFreeDock();
         if (chargingDock != null) {
+            int whReloaded = batteryCapacity - batteryLevel;
+            float cost = chargingDock.recharge(this);
             docks.add(chargingDock);
-            wsCharged += (batteryCapacity - batteryLevel);
-            incrementChargesCost(chargingDock.recharge(this));
+            wsCharged += (whReloaded);
+            incrementChargesCost(cost);
             incrementCharges();
             batteryLevel = batteryCapacity;
             rechargingLocation = null;
+            
+            System.out.println("(step: " + step + " - ElectricBike: " + idBike + 
+                               " recharges: " + whReloaded + "wh at dock: " + 
+                               chargingDock.getIdDock() + " with cost: " + cost + "€\n********)");
         } else {
             // Si no hay dock, se queda bloqueada para siempre quitando el destino y la estación.
             rechargingLocation = null;
@@ -370,8 +377,9 @@ public class ElectricBike
     /**
      * Carries out a single step of the bike's actions.
      * Moves one step towards the target (recharging or final) or stays idle.
+     * @param step The step number the bike is on.
      */
-    public void act(   )
+    public void act(int step)
     {
         if(location.equals(targetLocation)){
             idleCount+=1;
@@ -384,14 +392,16 @@ public class ElectricBike
                 reduceBatteryLevel();
                 if(location.equals(rechargingLocation)){
                     // EN EL CASO EN EL QUE NO SE PUEDA ALCANZAR NINGUN DOCK LIBRE DEBE QUEDARSE AHI SIN MOVERSE HASTA EL FINAL DE LA SIMULACION
-                    recharge();
+                    recharge(step);
                 }
             }
             else{
                 next=location.nextLocation(targetLocation);
+                if(next.equals(targetLocation)){
+                    System.out.println("(step: " + step + " - ElectricBike: " + idBike + " at target destination\n********)");
+                }
                 location=next;
                 reduceBatteryLevel();
-                //if(location.equals(targetLocation) NO HACE FALTA COMPROBAR ESTO YA QUE AL SIGUIENTE ACT DIRECTAMENTE AUMENTARIA idleCount y no se movería más
             }
         }
 
