@@ -211,7 +211,7 @@ public class EBikeDemo
             System.out.println(eb.toString());
 
             for(Dock dock : eb.getDocks()) {
-                System.out.println(dock.getIdDock() + ")");
+                System.out.println("(Dock: " + dock.getIdDock() + ")");
             }
         }
 

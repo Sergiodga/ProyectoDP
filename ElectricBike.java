@@ -23,6 +23,7 @@ public class ElectricBike
     private List<Dock> docks;
     private Location rechargingLocation;
 
+    private boolean blocked; //Añadido para bloquear bicicleta si es necesario
     /**
      * Constructor of class ElectricBike.
      * @param company The EB's operating company. Must not be null.
@@ -46,6 +47,7 @@ public class ElectricBike
         chargesCost=0;
         docks =new ArrayList<Dock>();
         rechargingLocation=null;
+        blocked=false;
     }
 
     public List<Dock> getDocks() {
@@ -226,7 +228,7 @@ public class ElectricBike
         this.targetLocation=location;
         calculateRoute();
     }
-    
+
     /**
      * Sets the list of docks where the electric bike has recharged.
      * @param docks The new list of {@link Dock} units.
@@ -234,7 +236,7 @@ public class ElectricBike
     public void setDocks(List<Dock> docks) {
         this.docks = docks;
     }
-    
+
     /**
      * Calculates the optimal route for the bike. 
      * If there isn't enough battery to reach the target, it attempts to find an intermediate 
@@ -271,7 +273,7 @@ public class ElectricBike
      */
     public boolean enoughBattery(   )
     {
-            boolean enough=false;
+        boolean enough=false;
         if(batteryLevel >= distanceToTheTargetLocation()*5){
             enough=true;
         }
@@ -288,23 +290,24 @@ public class ElectricBike
         BikeStation bestStation= null;
         int minDistanceToBike = 0;
         int minDistanceToTarget= 0;
+        int DistToTarget = location.distance(targetLocation);
 
         for(int i=0;i< allStations.size();i++){
             BikeStation station = allStations.get(i);
             Location stationLoc = station.getLocation();
             int distanceToStation = location.distance(stationLoc); //Distancia de bici a estación
-
-            if (batteryLevel >= distanceToStation * 5) {
-                int distanceToTarget = stationLoc.distance(targetLocation);
+            int distanceStationToTarget = stationLoc.distance(targetLocation);
+            if (distanceToStation > 0 && batteryLevel >= distanceToStation * 5 && distanceStationToTarget < DistToTarget) {
+                distanceStationToTarget = stationLoc.distance(targetLocation);
 
                 if (bestStation == null || distanceToStation < minDistanceToBike) {
                     minDistanceToBike = distanceToStation;
-                    minDistanceToTarget=distanceToTarget;
+                    minDistanceToTarget=distanceStationToTarget;
                     bestStation = station;
                 }
                 else if (distanceToStation == minDistanceToBike) {
-                    if (distanceToTarget < minDistanceToTarget) {
-                        minDistanceToTarget = distanceToTarget;
+                    if (distanceStationToTarget < minDistanceToTarget) {
+                        minDistanceToTarget = distanceStationToTarget;
                         bestStation = station;
                     }
                 }
@@ -315,7 +318,7 @@ public class ElectricBike
             rechargingLocation = bestStation.getLocation();
         } else {
             // Si no hay ninguna estación a la que pueda llegar, la bici se quedará parada 
-            rechargingLocation = null;
+            blocked=true;
         }
     }
 
@@ -346,14 +349,14 @@ public class ElectricBike
             incrementCharges();
             batteryLevel = batteryCapacity;
             rechargingLocation = null;
-            
+            calculateRoute();
+
             System.out.println("(step: " + step + " - ElectricBike: " + idBike + 
-                               " recharges: " + whReloaded + "wh at dock: " + 
-                               chargingDock.getIdDock() + " with cost: " + cost + "€\n********)");
+                " recharges: " + whReloaded + "wh at dock: " + 
+                chargingDock.getIdDock() + " with cost: " + cost + "€\n********)");
         } else {
             // Si no hay dock, se queda bloqueada para siempre quitando el destino y la estación.
-            rechargingLocation = null;
-            targetLocation = location;
+            blocked=true;
         }
     } 
 
@@ -381,30 +384,33 @@ public class ElectricBike
      */
     public void act(int step)
     {
-        if(location.equals(targetLocation)){
-            idleCount+=1;
-        }
-        else {
-            Location next=null;
-            if(rechargingLocation!=null){
-                next= location.nextLocation(rechargingLocation);
-                location=next;
-                reduceBatteryLevel();
-                if(location.equals(rechargingLocation)){
-                    // EN EL CASO EN EL QUE NO SE PUEDA ALCANZAR NINGUN DOCK LIBRE DEBE QUEDARSE AHI SIN MOVERSE HASTA EL FINAL DE LA SIMULACION
-                    recharge(step);
+        if(!blocked){
+            if(location.equals(targetLocation)){
+                idleCount+=1;
+            }
+            else {
+                Location next=null;
+                if(rechargingLocation!=null){
+                    next= location.nextLocation(rechargingLocation);
+                    if(next.equals(rechargingLocation)){
+                        location = next;
+                        reduceBatteryLevel();
+                        recharge(step);
+                        return;
+                    }
+                    location = next;
+                    reduceBatteryLevel();
+                }
+                else{
+                    next=location.nextLocation(targetLocation);
+                    if(next.equals(targetLocation)){
+                        System.out.println("(step: " + step + " - ElectricBike: " + idBike + " at target destination"+" ********)");
+                    }
+                    location=next;
+                    reduceBatteryLevel();
                 }
             }
-            else{
-                next=location.nextLocation(targetLocation);
-                if(next.equals(targetLocation)){
-                    System.out.println("(step: " + step + " - ElectricBike: " + idBike + " at target destination\n********)");
-                }
-                location=next;
-                reduceBatteryLevel();
-            }
         }
-
     }
 
     /**
