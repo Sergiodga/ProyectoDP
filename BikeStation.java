@@ -101,6 +101,8 @@ public class BikeStation
         }
         docks.add(dock);
         Collections.sort(docks, new ComparatorDocksChargingSpeed());
+        Collections.sort(docks, new ComparatorDocksChargingFee());
+        Collections.sort(docks, new ComparatorDocksId());
     }
 
     /**

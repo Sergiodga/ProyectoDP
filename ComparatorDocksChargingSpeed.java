@@ -12,19 +12,12 @@ public class ComparatorDocksChargingSpeed implements Comparator<Dock>
 {
     /**
      * Compares its two {@link Dock} arguments for order.
-     * @param d1 The first dock to be compared.
-     * @param d2 The second dock to be compared.
-     * @return A negative integer, zero, or a positive integer as the first dock goes
+     * @param d1 The first dock's charging speed to be compared.
+     * @param d2 The second dock's charging speed to be compared.
+     * @return A negative integer, zero, or a positive integer as the first dock's charging speed goes
      * before, is equivalent to, or goes after the second one.
      */
     public int compare(Dock d1, Dock d2){
-        int result = Integer.compare(d2.getChargingSpeed(), d1.getChargingSpeed());
-        if(result == 0) {
-            result = Float.compare(d1.getChargingFee(), d2.getChargingFee());
-        }
-        if(result == 0) {
-            result = new ComparatorDocksId().compare(d1, d2);
-        }
-        return result;
+        return Integer.compare(d2.getChargingSpeed(), d1.getChargingSpeed());
     }
 }

@@ -10,9 +10,6 @@ import java.util.ArrayList;
  */
 public class ElectricBike 
 {
-    //Prueba actualizar repositorio a ver si cambia colega
-    //dadadada
-    //Taqui tak
     private String idBike;
     private EBCompany company;
     private Location location;
