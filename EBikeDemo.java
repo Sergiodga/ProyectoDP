@@ -178,6 +178,8 @@ public class EBikeDemo
         System.out.println("(-------------------)");
         System.out.println("( Bike Stations )");
         System.out.println("(-------------------)");
+        
+        Collections.sort(stations, new  ComparatorBikeStationId());
 
         for(BikeStation bs:stations){
             System.out.println(bs.toString());
@@ -205,7 +207,8 @@ public class EBikeDemo
         System.out.println("(-------------------)");
         System.out.println("( Electric Bikes )");
         System.out.println("(-------------------)");
-        //Collections.sort(bikesByArrival, new ComparatorEBArrivingStep());
+        
+        Collections.sort(bikes, new ComparatorEBIdleCount());
 
         for(ElectricBike eb : bikes) {
             System.out.println(eb.toString());
@@ -218,7 +221,8 @@ public class EBikeDemo
         System.out.println("(-------------------)");
         System.out.println("( Bike Stations )");
         System.out.println("(-------------------)");
-        //Collections.sort(stationsByRecharges, new ComparatorBikeStationNumerRecharged());
+        
+        Collections.sort(stations, new ComparatorBikeStationEBRecharged());
 
         for(BikeStation station : stations) {
             System.out.println(station.toString());

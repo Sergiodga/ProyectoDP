@@ -3,7 +3,7 @@ import java.util.*;
 /**
  * Compares two {@link Dock} objects by charging speed in descending order. Ties are broken
  * by charging fee in ascending order and, if they still tie, by id in ascending order
- * (see {@link ComparatorDocksId}).
+ * (see {@link ComparatorDocksChargingFee} and {@link ComparatorDocksId}).
  * This is the criterion used to keep the docks sorted inside a {@link BikeStation}.
  * @author DP Clasess
  * @version 2026.10.13
@@ -19,11 +19,13 @@ public class ComparatorDocksChargingSpeed implements Comparator<Dock>
      */
     public int compare(Dock d1, Dock d2){
         int result=0;
-        if(d1.getChargingSpeed()==d2.getChargingSpeed()){
+        int speed1=d1.getChargingSpeed();
+        int speed2=d2.getChargingSpeed();
+        if(speed1==speed2){
             ComparatorDocksChargingFee chargingFeeComparator= new ComparatorDocksChargingFee();
             result= chargingFeeComparator.compare(d1, d2);
         }
-        else if (d1.getChargingSpeed() > d2.getChargingSpeed()){
+        else if((speed1) > speed2){
             result=-1;
         }
         else{

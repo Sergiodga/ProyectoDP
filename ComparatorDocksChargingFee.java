@@ -1,7 +1,7 @@
 import java.util.*; 
 
 /**
- * Compares two {@link Dock} objects based on their **ChargingFee** float in **ascending** order.
+ * Compares two {@link Dock} objects based on their ChargingFee in ascending order.
  * This is typically used as a final tie-breaker in multi-criteria sorting.
  * @author DP Clasess
  * @version 2026.10.13
@@ -18,11 +18,13 @@ public class ComparatorDocksChargingFee implements Comparator<Dock>
      */
     public int compare(Dock c1, Dock c2){  
         int result=0;
-        if(c1.getChargingFee()==c2.getChargingFee()){
+        float fee1=c1.getChargingFee();
+        float fee2=c2.getChargingFee();
+        if(fee1==fee2){
             ComparatorDocksId IdComparator= new ComparatorDocksId();
             result= IdComparator.compare(c1, c2);
         }
-        else if (c1.getChargingFee() < c2.getChargingFee()){
+        else if (fee1 < fee2){
             result=-1;
         }
         else{
