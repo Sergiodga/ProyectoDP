@@ -274,7 +274,7 @@ public class ElectricBike
     public boolean enoughBattery(   )
     {
         boolean enough=false;
-        if(batteryLevel >= distanceToTheTargetLocation()*5){
+        if(batteryLevel >= distanceToTheTargetLocation()*EBCompany.MOVINGCOST){
             enough=true;
         }
         return enough;
@@ -297,7 +297,7 @@ public class ElectricBike
             Location stationLoc = station.getLocation();
             int distanceToStation = location.distance(stationLoc); //Distancia de bici a estación
             int distanceStationToTarget = stationLoc.distance(targetLocation);
-            if (distanceToStation > 0 && batteryLevel >= distanceToStation * 5 && distanceStationToTarget < DistToTarget) {
+            if (distanceToStation > 0 && batteryLevel >= distanceToStation * EBCompany.MOVINGCOST && distanceStationToTarget < DistToTarget) {
                 distanceStationToTarget = stationLoc.distance(targetLocation);
 
                 if (bestStation == null || distanceToStation < minDistanceToBike) {
@@ -418,8 +418,8 @@ public class ElectricBike
      * Ensures the battery level does not go below zero.
      */
     public void reduceBatteryLevel(){
-        if(batteryLevel>=5){
-            batteryLevel-=5;
+        if(batteryLevel>=EBCompany.MOVINGCOST){
+            batteryLevel-=EBCompany.MOVINGCOST;
         }
     }
 
