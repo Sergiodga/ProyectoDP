@@ -100,7 +100,6 @@ public class BikeStation
     /**
      * Set the current location of the charging station.
      * @param location Where it is. Must not be null.
-     * @throws NullPointerException If location is null.
      */
     public void setLocation(Location location)
     {
