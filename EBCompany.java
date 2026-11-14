@@ -15,7 +15,7 @@ public class EBCompany
     
     public static final int MOVINGCOST = 5;
     /**
-     * Constructor for objects of class EVCompany.
+     * Constructor for objects of class EBCompany.
      * @param name The name of the company.
      */
     public EBCompany(String name)

@@ -187,14 +187,12 @@ public class ElectricBike
     /**
      * Set the current location.
      * @param location Where it is. Must not be null.
-     * @throws NullPointerException If location is null.
      */
     public void setLocation(Location location)
     {
-        if (location==null){
-            throw new NullPointerException("La location no puede ser null");
-        }
-        this.location=location;   
+        if (location!=null){
+            this.location=location;
+        } 
     }
 
     /**
@@ -222,14 +220,13 @@ public class ElectricBike
      */
     public void setTargetLocation(Location location)
     {
-        if (location==null){
-            throw new NullPointerException("La location no puede ser null");
+        if (location!=null){
+            this.targetLocation=location;
+            calculateRoute();
         }
-        this.targetLocation=location;
-        calculateRoute();
     }
 
-    /**
+        /**
      * Sets the list of docks where the electric bike has recharged.
      * @param docks The new list of {@link Dock} units.
      */
