@@ -46,7 +46,21 @@ public class LocationTest
     @Test
     public void testDistance()
     {
-        //TODO: Complete this code
+        Location location1 = new Location(3, 3);
+        Location location2 = new Location(3, 4);
+        Location location3 = new Location(2, 3);
+        assertEquals(1, location1.distance(location2));
+        assertEquals(1, location1.distance(location3));
+        Location location4 = new Location(1, 1);
+        Location location5 = new Location(5, 1);
+        assertEquals(2, location1.distance(location4));
+        assertEquals(2, location1.distance(location5));
+        Location location6 = new Location(1, 6);
+        Location location7 = new Location(4, 6);
+        assertEquals(3, location1.distance(location6));
+        assertEquals(3, location1.distance(location7));
+        Location location8 = new Location(3, 3);
+        assertEquals(0, location1.distance(location8));
     }
     
     /**
@@ -68,4 +82,6 @@ public class LocationTest
     {
         //TODO: Complete this code
     }
+
+    
 }
