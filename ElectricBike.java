@@ -340,6 +340,7 @@ public class ElectricBike
         if (chargingDock != null) {
             int whReloaded = batteryCapacity - batteryLevel;
             float cost = chargingDock.recharge(this);
+            chargingDock.setFree(false);
             docks.add(chargingDock);
             wsCharged += (whReloaded);
             incrementChargesCost(cost);
@@ -347,6 +348,7 @@ public class ElectricBike
             batteryLevel = batteryCapacity;
             rechargingLocation = null;
             calculateRoute();
+            chargingDock.setFree(true);
 
             System.out.println("(step: " + step + " - ElectricBike: " + idBike + 
                 " recharges: " + whReloaded + "wh at dock: " + 
