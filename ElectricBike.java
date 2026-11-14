@@ -35,6 +35,9 @@ public class ElectricBike
      */
     public ElectricBike(EBCompany company, Location location, Location targetLocation, String id, int batteryCapacity)
     {
+        if (location==null || company==null || targetLocation==null){
+            throw new NullPointerException("Location, company, targetLocation cannot be null");
+        }
         this.company=company;
         this.location=location;
         this.targetLocation=targetLocation;
@@ -187,15 +190,17 @@ public class ElectricBike
     /**
      * Set the current location.
      * @param location Where it is. Must not be null.
+     * @throws NullPointerException If location is null.
      */
     public void setLocation(Location location)
     {
-        if (location!=null){
-            this.location=location;
-        } 
+        if (location==null){
+            throw new NullPointerException("Location cannot be null");
+        }
+        this.location=location;
     }
 
-    /**
+        /**
      * Get the final target location.
      * @return Where this bike is ultimately headed.
      */
@@ -220,10 +225,11 @@ public class ElectricBike
      */
     public void setTargetLocation(Location location)
     {
-        if (location!=null){
-            this.targetLocation=location;
-            calculateRoute();
+        if (location==null){
+            throw new NullPointerException("TargetLocation cannot be null");
         }
+        this.targetLocation=location;
+        calculateRoute();
     }
 
         /**
