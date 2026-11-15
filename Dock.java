@@ -145,7 +145,7 @@ public class Dock
      * @return The list of electric bikes recharged by this dock.
      */
     public List<ElectricBike> getBikesRecharged() {
-        return new ArrayList<ElectricBike>(bikesRecharged);
+        return bikesRecharged;
     }
 
     /**

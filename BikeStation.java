@@ -32,7 +32,7 @@ public class BikeStation
      * @return a view of the docks of the station, sorted by charging speed(descending), charging fee(ascending) and identifier (ascending).
      */
     public List<Dock> getDocks(){
-        return new ArrayList<Dock>(docks);
+        return docks;
     }
 
     /**
