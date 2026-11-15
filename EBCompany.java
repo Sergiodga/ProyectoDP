@@ -150,6 +150,6 @@ public class EBCompany
      */
     @Override
     public String toString() {
-        return "(Compañia " + name + ")";
+        return "( Compañía " + name + " ) ";
     }
 }

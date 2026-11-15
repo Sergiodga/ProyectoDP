@@ -17,20 +17,28 @@ public class ComparatorEBIdleCount implements Comparator<ElectricBike>
      * @return A negative integer, zero, or a positive integer as the
      * first bike reached its destination before, at the same time, or after the second.
      */
-    public int compare(ElectricBike eb1, ElectricBike eb2){    
-        int result=0;
-        int idle1=eb1.getIdleCount();
-        int idle2=eb2.getIdleCount();
-        if(idle1==idle2){
-            ComparatorEBIdBike idComparator=new ComparatorEBIdBike();
-            result=idComparator.compare(eb1, eb2);
+    @Override
+    public int compare(ElectricBike eb1, ElectricBike eb2) {    
+        if (eb1.isBlocked() && !eb2.isBlocked()) {
+            return 1;
         }
-        else{if(idle1 > idle2){
-                result=-1;
-            }
-            else if(idle1 < idle2){
-                result=1;
-            }
+        if (!eb1.isBlocked() && eb2.isBlocked()) {
+            return -1;
+        }
+        if (eb1.isBlocked() && eb2.isBlocked()) {
+            return new ComparatorEBIdBike().compare(eb1, eb2);
+        }
+
+        int result = 0;
+        int idle1 = eb1.getIdleCount();
+        int idle2 = eb2.getIdleCount();
+        if (idle1 == idle2) {
+            ComparatorEBIdBike idComparator = new ComparatorEBIdBike();
+            result = idComparator.compare(eb1, eb2);
+        } else if (idle1 > idle2) {
+            result = -1;
+        } else {
+            result = 1;
         }
         return result;
     } 

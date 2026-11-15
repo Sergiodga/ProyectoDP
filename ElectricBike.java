@@ -110,6 +110,13 @@ public class ElectricBike
     }
 
     /**
+     * @return {@code true} if the bike is blocked, {@code false} otherwise.
+     */
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    /**
      * Set the id of the bike
      * @param idBike The new ID string for the electric bike.
      */
@@ -200,7 +207,7 @@ public class ElectricBike
         this.location=location;
     }
 
-        /**
+    /**
      * Get the final target location.
      * @return Where this bike is ultimately headed.
      */
@@ -232,7 +239,7 @@ public class ElectricBike
         calculateRoute();
     }
 
-        /**
+    /**
      * Sets the list of docks where the electric bike has recharged.
      * @param docks The new list of {@link Dock} units.
      */
@@ -291,7 +298,7 @@ public class ElectricBike
     public void calculateRechargingPosition(){
         List<BikeStation> allStations = company.getStations();
         BikeStation bestStation= null;
-        int minDistanceToBike = 0;
+        int minTotalDistance = 0;
         int minDistanceToTarget= 0;
         int DistToTarget = location.distance(targetLocation);
 
@@ -301,14 +308,14 @@ public class ElectricBike
             int distanceToStation = location.distance(stationLoc); //Distancia de bici a estación
             int distanceStationToTarget = stationLoc.distance(targetLocation);
             if (distanceToStation > 0 && batteryLevel >= distanceToStation * EBCompany.MOVINGCOST && distanceStationToTarget < DistToTarget) {
-                distanceStationToTarget = stationLoc.distance(targetLocation);
+                int totalDistance = distanceToStation + distanceStationToTarget;
 
-                if (bestStation == null || distanceToStation < minDistanceToBike) {
-                    minDistanceToBike = distanceToStation;
+                if (bestStation == null || distanceToStation < minTotalDistance) {
+                    minTotalDistance = totalDistance;
                     minDistanceToTarget=distanceStationToTarget;
                     bestStation = station;
                 }
-                else if (distanceToStation == minDistanceToBike) {
+                else if (totalDistance == minTotalDistance) {
                     if (distanceStationToTarget < minDistanceToTarget) {
                         minDistanceToTarget = distanceStationToTarget;
                         bestStation = station;
@@ -358,7 +365,7 @@ public class ElectricBike
 
             System.out.println("(step: " + step + " - ElectricBike: " + idBike + 
                 " recharges: " + whReloaded + "wh at dock: " + 
-                chargingDock.getIdDock() + " with cost: " + cost + "€\n********)");
+                chargingDock.getIdDock() + " with cost: " + cost + "€ ********)");
         } else {
             // Si no hay dock, se queda bloqueada para siempre quitando el destino y la estación.
             blocked=true;
@@ -391,12 +398,12 @@ public class ElectricBike
     {
         if(!blocked){
             if(location.equals(targetLocation)){
-                idleCount+=1;
+                idleCount += 1;
             }
             else {
-                Location next=null;
-                if(rechargingLocation!=null){
-                    next= location.nextLocation(rechargingLocation);
+                Location next = null;
+                if(rechargingLocation != null){
+                    next = location.nextLocation(rechargingLocation);
                     if(next.equals(rechargingLocation)){
                         location = next;
                         reduceBatteryLevel();
@@ -407,14 +414,16 @@ public class ElectricBike
                     reduceBatteryLevel();
                 }
                 else{
-                    next=location.nextLocation(targetLocation);
+                    next = location.nextLocation(targetLocation);
                     if(next.equals(targetLocation)){
-                        System.out.println("(step: " + step + " - ElectricBike: " + idBike + " at target destination"+" ********)");
+                        System.out.println("(step: " + step + " - ElectricBike: " + idBike + " at target destination" + " ********)");
                     }
-                    location=next;
+                    location = next;
                     reduceBatteryLevel();
                 }
             }
+        } else {
+            idleCount += 1;
         }
     }
 

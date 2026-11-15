@@ -38,7 +38,7 @@ public class EBikeDemo
     private List<BikeStation> stations;
 
     /** Constant for selecting the demo scenario, using the {@link DemoType} enumeration. */
-    private static final DemoType DEMO=DemoType.SIMPLE;  //Cambiar SIMPLE MEDIUM ADVANCED
+    private static final DemoType DEMO=DemoType.ADVANCED;  //Cambiar SIMPLE MEDIUM ADVANCED
 
     /**
      * Constructor for objects of class EBikeDemo.
@@ -77,7 +77,7 @@ public class EBikeDemo
         //TODO: Complete this code: for each bike, act
         for(ElectricBike bici: bikes){
             bici.act(step);
-            System.out.println("(step: "+ step +" - " + bici.toString()+")");
+            System.out.println("(step: "+ step +" - " + bici.toString().substring(1));
         }
     }
 
@@ -165,6 +165,8 @@ public class EBikeDemo
      * the details of all {@link ElectricBike}s and {@link BikeStation}s.
      */
     private void showInitialInfo() {
+        System.out.println(company.toString());
+        
         System.out.println("(-------------------)");
         System.out.println("( Electric Bikes )");
         System.out.println("(-------------------)");
