@@ -2,17 +2,20 @@
  * Enumeration that defines the types of pre-configured demonstration scenarios 
  * for the simulation. Each type specifies the number of bikes, stations, 
  * and docks to be created.
- * * @author DP classes
- * @version 2025.20.10
+ * @author DP classes
+ * @version 2026.11.10
  */
 public enum DemoType
 {
-    /** Simple scenario: 2 bikes, 4 stations, 4 docks per station. */
-    SIMPLE ("SIMPLE DEMO", 2, 4, 4),
-    /** Medium scenario: 5 bikes, 4 stations, 4 docks per station. */
-    MEDIUM ("MEDIUM DEMO", 5, 4, 4),
-    /** Advanced scenario: 8 bikes, 4 stations, 4 docks per station. */
-    ADVANCED ("ADVANCED DEMO", 8, 4, 4);
+    /** Nano scenario: 2 bikes, 2 stations, 3 docks per station. */
+    NANO("NANO DEMO", 2, 2, 3),
+    /** Simple scenario: 4 bikes, 5 stations, 4 docks per station. */
+    SIMPLE ("SIMPLE DEMO", 4, 5, 4),
+    /** Medium scenario: 7 bikes, 5 stations, 4 docks per station. */
+    MEDIUM ("MEDIUM DEMO", 7, 5, 4),
+    /** Advanced scenario: 10 bikes, 5 stations, 4 docks per station. */
+    ADVANCED ("ADVANCED DEMO", 10, 5, 4);
+    
     
     /** Descriptive name of the scenario. */
     private String name;

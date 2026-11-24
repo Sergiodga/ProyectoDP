@@ -38,7 +38,7 @@ public class EBikeDemo
     private List<BikeStation> stations;
 
     /** Constant for selecting the demo scenario, using the {@link DemoType} enumeration. */
-    private static final DemoType DEMO=DemoType.ADVANCED;  //Cambiar SIMPLE MEDIUM ADVANCED
+    private static final DemoType DEMO=DemoType.ADVANCED;  //Cambiar NANO SIMPLE MEDIUM ADVANCED
 
     /**
      * Constructor for objects of class EBikeDemo.
@@ -104,19 +104,25 @@ public class EBikeDemo
      * The bikes list is sorted by plate using {@link ComparatorEBPlate}.
      */
     private void createElectricBikes() {
-        Location [] locations = {new Location(10,13), new Location(8,4), new Location(8,4), new Location(15,10), 
-                new Location(1,1), new Location(2,2), new Location(11,13), new Location(14,16)};
-        Location [] targetLocations = {new Location(1,1), new Location(19,19), new Location(12,17), new Location(4,4), 
-                new Location(1,10), new Location(5,5), new Location(8,7), new Location(19,19)};
+        Location [] locations = {new Location(1,1), new Location(1,1), new Location(1,19), new Location(1,19), 
+                                new Location(19,1), new Location(19,1), new Location(10,19), new Location(19,10),
+                                new Location(10,10), new Location(10,10)};
 
+        Location [] targetLocations = {new Location(20,20), new Location(20,20), new Location(19,1), new Location(19,1), 
+                                       new Location(1,19), new Location(1,19), new Location(19,10), new Location(10,19),
+                                       new Location(10,20), new Location(20,10)};
         //createLocations(locations,targetLocations);
         for (int i=0;i < DEMO.getNumBikesToCreate();i++){
-            ElectricBike eb = new ElectricBike(company, locations[i],targetLocations[i],("EBCC"+i),(i+1)*15);
-            bikes.add(eb);
-            company.addElectricBike(eb);
-        }
+            ElectricBike eb;
+            int module = i % BikeTier.numTiers();
+            //if (BikeTier.values()[module] == BikeTier.PRIORITY) eb = new PriorityEB(company, locations[i], targetLocations[i], ("EBCC"+i),(i+1)*(20-i));
+            //else if (BikeTier.values()[module] == BikeTier.URBAN) eb = new UrbanEB(company, locations[i], targetLocations[i], ("EBCC"+i), (i+1)*(20-i));
+            //else if (BikeTier.values()[module] == BikeTier.PREMIUM) eb = new PremiumEB(company, locations[i], targetLocations[i], ("EBCC"+i), (i+1)*(20-i));
+            //else eb = new CommonEB(company, locations[i], targetLocations[i], ("EBCC"+i), (i+1)*(20-i));
+            //company.addElectricBike(eb);
+                    }
         Collections.sort(bikes, new ComparatorEBIdBike());
-
+        //PUEDE SER QUE FALTEN COSAS
     }
 
     /**
