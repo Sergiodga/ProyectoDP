@@ -141,6 +141,10 @@ public class BikeStation
      */
     @Override
     public String toString(){
-        return "(BikeStation: " + idStation + ", " + getNumberOfBikesRecharged() + ", " + location + ")";
+        String cad= "(BikeStation: " + idStation + ", " + getNumberOfBikesRecharged() + ", " + location + ")";
+        for(Dock dock: this.getDocks()){
+            cad+= "\n" + dock;
+        }
+        return cad;
     }
 }

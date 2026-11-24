@@ -410,17 +410,15 @@ public class ElectricBike
                         recharge(step);
                         return;
                     }
-                    location = next;
-                    reduceBatteryLevel();
                 }
                 else{
                     next = location.nextLocation(targetLocation);
                     if(next.equals(targetLocation)){
                         System.out.println("(step: " + step + " - ElectricBike: " + idBike + " at target destination" + " ********)");
                     }
-                    location = next;
-                    reduceBatteryLevel();
                 }
+                location = next;
+                reduceBatteryLevel();
             }
         } else {
             idleCount += 1;
@@ -448,6 +446,18 @@ public class ElectricBike
             "wh, "+ getChargesCount() +", " + 
             getChargesCost()+ "€, " + getIdleCount() + 
             ", " +  getStringRoute() + ")";
+        return cad;
+    }
+    /**
+     * Returns a detailed string representation of the electric bike with the list of docks it has recharged on.
+     * @return A string containing the bike's name, plate, battery info, charge counts, costs, idle count, and route
+     * and the id of the docks.
+     */
+    public String toStringWithDocks(){
+        String cad= this.toString();
+        for(Dock dock : this.getDocks()){
+            cad+="\n" +"(Dock: " + dock.getIdDock() + ")";
+        }
         return cad;
     }
 

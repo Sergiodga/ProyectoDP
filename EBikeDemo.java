@@ -174,7 +174,7 @@ public class EBikeDemo
         Collections.sort(bikes, new  ComparatorEBIdBike());
 
         for(ElectricBike eb:bikes){
-            System.out.println(eb.toString());
+            System.out.println(eb.toStringWithDocks());
         }
 
         System.out.println("(-------------------)");
@@ -184,10 +184,7 @@ public class EBikeDemo
         Collections.sort(stations, new  ComparatorBikeStationId());
 
         for(BikeStation bs:stations){
-            System.out.println(bs.toString());
-            for(Dock dock : bs.getDocks()){
-                System.out.println(dock.toString());
-            }
+            System.out.println(bs);
         }
 
         System.out.println("(------------------)");
@@ -213,11 +210,7 @@ public class EBikeDemo
         Collections.sort(bikes, new ComparatorEBIdleCount());
 
         for(ElectricBike eb : bikes) {
-            System.out.println(eb.toString());
-
-            for(Dock dock : eb.getDocks()) {
-                System.out.println("(Dock: " + dock.getIdDock() + ")");
-            }
+            System.out.println(eb.toStringWithDocks());
         }
 
         System.out.println("(-------------------)");
@@ -227,14 +220,8 @@ public class EBikeDemo
         Collections.sort(stations, new ComparatorBikeStationEBRecharged());
 
         for(BikeStation station : stations) {
-            System.out.println(station.toString());
+            System.out.println(station);
 
-            for(Dock dock : station.getDocks()) {
-                System.out.println( dock.toString());
-                for(ElectricBike eb : dock.getBikesRecharged()) {
-                    System.out.println( eb.toString());
-                }
-            }
         }     
     }
 

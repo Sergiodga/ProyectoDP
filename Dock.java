@@ -131,6 +131,9 @@ public class Dock
         String cad= "(Dock: "+ getIdDock() +
             ", " + getChargingSpeed() + "wh, " + getChargingFee() + "€, "
             + getNumerEVRecharged()+ ", " + getAmountCollected()+ "€)";
+        for(ElectricBike bike: this.getBikesRecharged()){
+            cad+= "\n" + bike;
+        }
         return cad;
     }    
 
