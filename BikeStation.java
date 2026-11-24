@@ -93,8 +93,7 @@ public class BikeStation
         if(dock == null){
             throw new NullPointerException("Docks no pueden ser nulos");
         }
-        
-        if(dock != null){
+        if(getDock(dock.getIdDock()) == null){
             docks.add(dock);
             Collections.sort(docks, new ComparatorDocksChargingSpeed()); //INTERNAMENTE YA ORDENA EN CASCADA POR EL RESTO DE CONDICIONES, NO HACEN FALTA MAS LLAMADAS
 
