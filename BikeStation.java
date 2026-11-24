@@ -72,8 +72,8 @@ public class BikeStation
     /**
      * @return The unique identifier of the charging station.
      */
-    public String getId()
-    {  
+        public String getId()
+        {  
         return idStation;
     }
 
@@ -90,7 +90,10 @@ public class BikeStation
      */
     public void addDock(Dock dock)
     {
-        if(dock != null){
+        if(dock == null){
+            throw new NullPointerException("Docks no pueden ser nulos");
+        }
+        if(getDock(dock.getIdDock()) == null){
             docks.add(dock);
             Collections.sort(docks, new ComparatorDocksChargingSpeed()); //INTERNAMENTE YA ORDENA EN CASCADA POR EL RESTO DE CONDICIONES, NO HACEN FALTA MAS LLAMADAS
 

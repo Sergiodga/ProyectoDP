@@ -200,5 +200,5 @@ public class Dock
         insertBike(eb);
         return whReloadCost;
     }
-
 }
+
