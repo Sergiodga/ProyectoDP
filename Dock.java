@@ -1,3 +1,4 @@
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -135,7 +136,42 @@ public class Dock
             cad+= "\n" + bike;
         }
         return cad;
-    }    
+    }
+
+    /**
+     * Compara este dock con otro objeto para determinar si representan la misma dársena.
+     * Dos objetos de tipo Dock se consideran iguales si coinciden en su identificador,
+     * su velocidad de carga y su tarifa de carga, aunque solo con el id se podría hacer, con
+     * esto nos aseguramos del todo.
+     *
+     * @param obj El objeto con el que se desea comparar este dock.
+     * @return true si ambos objetos son instancias de Dock y tienen el mismo idDock,
+     *         chargingSpeed y chargingFee; false en caso contrario.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Dock)) {
+            return false;
+        }
+        Dock other = (Dock) obj;
+        return this.chargingSpeed == other.chargingSpeed
+        && this.chargingFee == other.chargingFee
+        && this.idDock == other.idDock; //Nos aseguramos que sean el mismo comparando más de un atributo
+    }
+
+    /**
+     * Calcula y devuelve el código hash de este dock a partir de sus campos significativos
+     * (idDock, chargingSpeed y chargingFee) para garantizar la coherencia con el método equals.
+     *
+     * @return El valor entero del código hash generado para este dock.
+     */
+    @Override
+    public int hashCode(){
+        return Objects.hash(idDock, chargingSpeed, chargingFee);
+    }
 
     /**
      * @return The total number of {@link ElectricBike}s that have been recharged by this dock.

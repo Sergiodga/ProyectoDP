@@ -109,7 +109,7 @@ public class BikeStation
         }
         this.location= location;
     }
-    
+
     /**
      * Sets the unique identifier of the charging station.
      * @param idStation The new ID string for the station.
@@ -125,7 +125,7 @@ public class BikeStation
     public void setDocks(List<Dock> docks) {
         this.docks = docks;
     }
-    
+
     /**
      * @return the number recharged performed in the docks of the station
      */public int getNumberOfBikesRecharged(){
@@ -146,5 +146,31 @@ public class BikeStation
             cad+= "\n" + dock;
         }
         return cad;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(this==obj){
+            return true;
+        }
+        if(!(obj instanceof BikeStation)){
+            return false;
+        }
+        BikeStation other= (BikeStation) obj;
+        return this.idStation == other.idStation
+        && this.location == other.location;
+    }
+
+    /**
+     * Calcula y devuelve el código hash de esta estación de bicicletas a partir de sus
+     * campos significativos (idStation y location) para garantizar la coherencia con
+     * el método equals.
+     *
+     * @return El valor entero del código hash generado para esta estación de bicicletas.
+     */
+    @Override
+    public int hashCode() {
+        // Genera el código hash combinando exactamente los mismos campos utilizados en equals
+        return Objects.hash(idStation, location);
     }
 }

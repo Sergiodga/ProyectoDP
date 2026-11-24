@@ -12,7 +12,7 @@ public class EBCompany
     private String name;
     private List<ElectricBike> subscribedBikes;
     private List<BikeStation> stations;
-    
+
     public static final int MOVINGCOST = 5;
     /**
      * Constructor for objects of class EBCompany.
@@ -78,7 +78,7 @@ public class EBCompany
     public void setStations(List<BikeStation> stations) {
         this.stations = stations;
     }
-    
+
     /**
      * Adds a {@link BikeStation} to the company's network.
      * @param station The bike station to add.
@@ -89,8 +89,7 @@ public class EBCompany
             stations.add(station);
         }
     }
-    
-    
+
     /**
      * Retrieves a {@link BikeStation} by its unique ID.
      * @param id The ID of the station to find.
@@ -98,15 +97,15 @@ public class EBCompany
      */
     public BikeStation getBikeStation(String id)
     {
-       Iterator<BikeStation> iterator = stations.iterator();
-       BikeStation found = null;
-       while(found == null && iterator.hasNext()){
-           BikeStation station = iterator.next();
-           if(station.getId().equals(id)){
-               found = station;
-           }
-       }
-       return found;
+        Iterator<BikeStation> iterator = stations.iterator();
+        BikeStation found = null;
+        while(found == null && iterator.hasNext()){
+            BikeStation station = iterator.next();
+            if(station.getId().equals(id)){
+                found = station;
+            }
+        }
+        return found;
     }
 
     /**
@@ -126,15 +125,14 @@ public class EBCompany
         }
         return found;
     }
-    
-    
+
     /**
      * @return The total number of managed {@link BikeStation}s.
      */
     public int getNumberOfStations(){
         return stations.size();
     }
-    
+
     /**
      * Clears all managed bikes and stations, resetting the company to an empty state.
      */
@@ -142,8 +140,7 @@ public class EBCompany
         subscribedBikes.clear();
         stations.clear();
     }
-    
-    
+
     /**
      * Returns a string representation of the company, showing its name.
      * @return A string with the format "(Compañia <name>)"
@@ -151,5 +148,38 @@ public class EBCompany
     @Override
     public String toString() {
         return "( Compañía " + name + " ) ";
+    }
+
+    /**
+     * Compara esta compañía con otro objeto para determinar si representan la misma
+     * empresa gestora. Dos objetos de tipo EBCompany se consideran iguales si coinciden
+     * en su identificador (name).
+     *
+     * @param obj El objeto con el que se desea comparar esta compañía.
+     * @return true si ambos objetos son instancias de EBCompany y tienen el mismo
+     *         identificador (name); false en caso contrario.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof EBCompany)) {
+            return false;
+        }
+        EBCompany other = (EBCompany) obj;
+
+        return (this.name == other.name);
+    }
+
+    /**
+     * Calcula y devuelve el código hash de esta compañía a partir de su campo
+     * significativo (name) para garantizar la coherencia con el método equals[cite: 8, 25].
+     *
+     * @return El valor entero del código hash generado para esta compañía.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

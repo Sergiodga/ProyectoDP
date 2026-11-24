@@ -1,3 +1,4 @@
+import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -448,6 +449,7 @@ public class ElectricBike
             ", " +  getStringRoute() + ")";
         return cad;
     }
+
     /**
      * Returns a detailed string representation of the electric bike with the list of docks it has recharged on.
      * @return A string containing the bike's name, plate, battery info, charge counts, costs, idle count, and route
@@ -459,6 +461,41 @@ public class ElectricBike
             cad+="\n" +"(Dock: " + dock.getIdDock() + ")";
         }
         return cad;
+    }
+
+    /**
+     * Compara esta bicicleta eléctrica con otro objeto para determinar si representan
+     * la misma bicicleta. Dos objetos de tipo ElectricBike se consideran iguales si
+     * coinciden en su identificador y su capacidad de batería.
+     *
+     * @param obj El objeto con el que se desea comparar esta bicicleta eléctrica.
+     * @return true si ambos objetos son instancias de ElectricBike y tienen el mismo
+     *         idBike y batteryCapacity; false en caso contrario.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ElectricBike)) {
+            return false;
+        }
+        ElectricBike other = (ElectricBike) obj;
+
+        return this.batteryCapacity == other.batteryCapacity
+        && this.idBike == other.idBike;
+    }
+
+    /**
+     * Calcula y devuelve el código hash de esta bicicleta eléctrica a partir de sus campos
+     * significativos (idBike y batteryCapacity) para garantizar la coherencia
+     * con el método equals.
+     *
+     * @return El valor entero del código hash generado para esta bicicleta eléctrica.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(idBike, batteryCapacity);
     }
 
 }
